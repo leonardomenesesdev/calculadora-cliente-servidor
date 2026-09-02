@@ -14,9 +14,9 @@ func main() {
 	porta := flag.String("porta", "9000", "porta do servidor")
 	flag.Parse()
 
-	endereco := net.JoinHostPort(*host, *porta)
+	endereco := net.JoinHostPort(*host, *porta) //junta host e porta (host:porta)
 
-	conn, err := net.Dial("tcp", endereco)
+	conn, err := net.Dial("tcp", endereco) //tenta estabelecerr a conexao tcp com o server
 	if err != nil {
 		fmt.Println("Nao foi possivel conectar em", endereco, "->", err)
 		os.Exit(1)
@@ -30,8 +30,7 @@ func main() {
 
 	for {
 		fmt.Print("calc> ")
-
-		// Scan retorna false no fim da entrada (Ctrl+Z no Windows / Ctrl+D no Linux).
+		//scanner retorna false se o usuario encerra a entrada
 		if !scanner.Scan() {
 			fmt.Println()
 			conn.Write([]byte("SAIR"))
@@ -48,7 +47,6 @@ func main() {
 			break
 		}
 
-		// SAIR nao tem resposta: o servidor apenas fecha a conexao.
 		if strings.ToUpper(comando) == "SAIR" {
 			break
 		}
