@@ -8,7 +8,7 @@ import (
 	"strings"
 )
 
-// Mensagens de erro do protocolo.
+// mensagens de erro
 const (
 	erroFormato = "ERRO: formato invalido (use: OPERACAO NUM1 NUM2)"
 	erroComando = "ERRO: comando desconhecido"
@@ -26,7 +26,7 @@ func main() {
 		fmt.Println("Erro ao abrir a porta", *porta, "->", err)
 		return
 	}
-	defer listener.Close()
+	defer listener.Close() //executa o listener.Close() quando a main terminar
 
 	fmt.Println("Servidor de calculo escutando na porta", *porta)
 
@@ -56,8 +56,7 @@ func tratarConexao(conn net.Conn) {
 	for {
 		n, err := conn.Read(buffer)
 		if err != nil {
-			// EOF ou conexao perdida: encerra o atendimento deste cliente.
-			return
+			return //EOF ou conexao perdida encerra o atendimento pra esse cliente
 		}
 
 		mensagem := strings.TrimSpace(string(buffer[:n]))
@@ -84,8 +83,6 @@ func processar(mensagem string) string {
 
 	operacao := strings.ToUpper(campos[0])
 
-	// Primeiro validamos o comando: "HELLO" e comando desconhecido,
-	// enquanto "MUL 3" e um comando valido com formato invalido.
 	switch operacao {
 	case "SOMA", "SUB", "MUL", "DIV":
 	default:
